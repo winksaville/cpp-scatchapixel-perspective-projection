@@ -72,8 +72,36 @@ void multPointMatrix(const Vec3f &in, Vec3f &out, const Matrix44f &M)
     }
 }
 
+#include <cassert>
+
 int main(int argc, char **argv)
 {
+#if 1
+    Vec3f v1 = Vec3f(2, 3, 4);
+    std::cout << "v1:" << std::endl << v1 << std::endl;
+    Matrix44f m1;
+    std::cout << "m1:" << std::endl << m1 << std::endl;
+    Vec3f v2;
+    multPointMatrix(v1, v2, m1);
+    std::cout << "v2:" << std::endl << v2 << std::endl;
+    assert(v1.x == v2.x);
+    assert(v1.y == v2.y);
+    assert(v1.z == v2.z);
+    v1 = Vec3f(0.5, 0.5, 0.5);
+    std::cout << "v1:" << std::endl << v1 << std::endl;
+    m1 = Matrix44f(
+            0.2, 0.2, 0.2, 0.2,
+            0.2, 0.2, 0.2, 0.2,
+            0.2, 0.2, 0.2, 0.2,
+            0.2, 0.2, 0.2, 0.2);
+    std::cout << "m1:" << std::endl << m1 << std::endl;
+    multPointMatrix(v1, v2, m1);
+    std::cout << "v2:" << std::endl << v2 << std::endl;
+    m1.x[3][3] = 1;
+    std::cout << "m1:" << std::endl << m1 << std::endl;
+    multPointMatrix(v1, v2, m1);
+    std::cout << "v2:" << std::endl << v2 << std::endl;
+#else
     uint32_t imageWidth = 512, imageHeight = 512;
     Matrix44f Mproj;
     Matrix44f worldToCamera;
@@ -121,4 +149,5 @@ int main(int argc, char **argv)
     delete [] buffer;
 
     return 0;
+#endif
 }
